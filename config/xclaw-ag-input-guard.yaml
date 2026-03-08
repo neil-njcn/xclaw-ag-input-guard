@@ -1,0 +1,27 @@
+# xclaw-ag-input-guard Configuration
+# Place this file at: config/xclaw-ag-input-guard.yaml
+
+# Detection threshold (0.0 - 1.0)
+# Higher values = more strict, may catch more false positives
+# Lower values = more lenient, may miss some attacks
+threshold: 0.7
+
+# Action mode: block | warn | log
+# - block: Reject the input entirely
+# - warn: Allow but flag with warning
+# - log: Silently log for review
+action: block
+
+# Detector configuration
+# Enable/disable specific detectors
+detectors:
+  prompt_injection: true
+  jailbreak: true
+  agent_hijacking: true
+
+# Logging configuration
+logging:
+  level: INFO
+  file: logs/input-guard.log
+  max_size: 10MB
+  backup_count: 5
