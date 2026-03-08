@@ -33,7 +33,7 @@ classifiers = [
 ]
 requires-python = ">=3.12"
 dependencies = [
-    "xclaw-agentguard>=1.0.0",
+    "xclaw-agentguard-framework>=2.3.1",
     "pyyaml>=6.0",
     "pydantic>=2.0.0",
 ]

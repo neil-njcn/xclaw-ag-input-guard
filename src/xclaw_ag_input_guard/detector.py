@@ -143,15 +143,35 @@ class InputGuard:
         
         # Run all enabled detectors
         all_results = []
-        
+
         for detector_name, detector in self._detectors.items():
             try:
                 result = detector.detect(message)
+
+                # Handle DetectionResult object (from xclaw-agentguard-framework v2.3.1+)
+                # or dict (legacy compatibility)
+                if hasattr(result, 'detected'):
+                    # DetectionResult object
+                    is_detected = result.detected
+                    confidence = getattr(result, 'confidence', 0.0)
+
+                    # Extract patterns from DetectionEvidence
+                    evidence = getattr(result, 'evidence', None)
+                    if evidence and hasattr(evidence, 'matched_patterns'):
+                        patterns = evidence.matched_patterns
+                    else:
+                        patterns = []
+                else:
+                    # Legacy dict format
+                    is_detected = result.get('detected', False)
+                    confidence = result.get('confidence', 0.0)
+                    patterns = result.get('patterns', [])
+
                 all_results.append({
                     'detector': detector_name,
-                    'detected': result.get('detected', False),
-                    'confidence': result.get('confidence', 0.0),
-                    'patterns': result.get('patterns', []),
+                    'detected': is_detected,
+                    'confidence': confidence,
+                    'patterns': patterns,
                     'details': result,
                 })
             except Exception as e:
